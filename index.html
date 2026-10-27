@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ITCare - Dashboard demo IT Helpdesk dan Asset Management.">
+  <title>ITCare | IT Support Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="dashboard">
+        <span class="brand-icon"><i data-lucide="monitor-cog"></i></span>
+        <span><strong>ITCare</strong><small>IT SUPPORT CENTER</small></span>
+      </a>
+
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="main-nav">
+        <button class="nav-link active" data-page="dashboard">
+          <i data-lucide="layout-dashboard"></i><span>Dashboard</span>
+        </button>
+        <button class="nav-link" data-page="tickets">
+          <i data-lucide="ticket"></i><span>Manajemen Tiket</span><span class="nav-count" id="navOpenCount">0</span>
+        </button>
+        <button class="nav-link" data-page="assets">
+          <i data-lucide="monitor"></i><span>Inventaris Aset</span>
+        </button>
+        <button class="nav-link" data-page="about">
+          <i data-lucide="info"></i><span>Tentang Proyek</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="support-card">
+          <div class="support-icon"><i data-lucide="headset"></i></div>
+          <strong>IT Support Center</strong>
+          <p>Kelola kendala teknis dan aset IT dalam satu dashboard.</p>
+          <span class="online-status"><span></span> Demo mode aktif</span>
+        </div>
+        <div class="sidebar-user">
+          <div class="avatar">IT</div>
+          <div class="user-info"><strong>IT Administrator</strong><small>Demo Account</small></div>
+          <i data-lucide="chevrons-up-down"></i>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="menuToggle" aria-label="Buka menu">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="breadcrumb"><span>Workspace</span><i data-lucide="chevron-right"></i><strong id="breadcrumbTitle">Dashboard</strong></div>
+        </div>
+        <div class="topbar-right">
+          <span class="demo-pill"><span></span> PORTFOLIO DEMO</span>
+          <button class="icon-button" id="todayButton" title="Tanggal hari ini"><i data-lucide="calendar-days"></i></button>
+          <div class="topbar-avatar">IT</div>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- DASHBOARD -->
+        <section class="page-section active" id="page-dashboard">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">OVERVIEW</div>
+              <h1>Dashboard</h1>
+              <p class="page-subtitle">Pantau tiket bantuan dan kondisi aset IT dari satu tempat.</p>
+            </div>
+            <div class="heading-actions">
+              <button class="btn btn-secondary" id="dashboardExport"><i data-lucide="download"></i> Ekspor tiket</button>
+              <button class="btn btn-primary" id="quickAddTicket"><i data-lucide="plus"></i> Buat tiket</button>
+            </div>
+          </div>
+
+          <div class="welcome-banner">
+            <div class="welcome-copy">
+              <div class="welcome-tag"><i data-lucide="activity"></i> IT OPERATIONS</div>
+              <h2>Halo, tim IT Support! 👋</h2>
+              <p>Berikut ringkasan kondisi helpdesk dan inventaris perangkat saat ini.</p>
+              <button class="welcome-link" data-goto="tickets">Lihat semua tiket <i data-lucide="arrow-up-right"></i></button>
+            </div>
+            <div class="welcome-art">
+              <div class="art-circle circle-one"></div><div class="art-circle circle-two"></div>
+              <div class="art-device"><i data-lucide="monitor-check"></i><span></span></div>
+              <div class="art-badge badge-check"><i data-lucide="check"></i></div>
+              <div class="art-badge badge-wifi"><i data-lucide="wifi"></i></div>
+            </div>
+          </div>
+
+          <div class="section-title-row">
+            <div><h2>Ringkasan operasional</h2><p>Ikhtisar tiket dan aset IT</p></div>
+            <span class="updated-label"><i data-lucide="refresh-cw"></i> Data diperbarui otomatis</span>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top"><span>Total tiket</span><span class="stat-icon icon-blue"><i data-lucide="ticket"></i></span></div>
+              <div class="stat-number" id="statTotalTickets">0</div>
+              <div class="stat-foot"><span class="stat-dot dot-blue"></span> Seluruh tiket tercatat</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Tiket terbuka</span><span class="stat-icon icon-orange"><i data-lucide="clock-3"></i></span></div>
+              <div class="stat-number" id="statOpenTickets">0</div>
+              <div class="stat-foot"><span class="stat-dot dot-orange"></span> Membutuhkan tindak lanjut</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Sedang diproses</span><span class="stat-icon icon-purple"><i data-lucide="wrench"></i></span></div>
+              <div class="stat-number" id="statProgressTickets">0</div>
+              <div class="stat-foot"><span class="stat-dot dot-purple"></span> Dalam penanganan teknisi</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Tiket selesai</span><span class="stat-icon icon-green"><i data-lucide="check-circle-2"></i></span></div>
+              <div class="stat-number" id="statResolvedTickets">0</div>
+              <div class="stat-foot"><span class="stat-dot dot-green"></span><span id="resolvedPercentage">0%</span> dari total tiket</div>
+            </article>
+          </div>
+
+          <div class="analytics-grid">
+            <article class="panel chart-panel">
+              <div class="panel-heading">
+                <div><h3>Aktivitas tiket</h3><p>Jumlah tiket berdasarkan tanggal dibuat</p></div>
+                <span class="chart-legend"><span></span> Tiket</span>
+              </div>
+              <div class="bar-chart" id="ticketActivityChart" aria-label="Grafik aktivitas tiket"></div>
+              <div class="chart-footer"><span><i data-lucide="calendar"></i> 7 hari terakhir</span><strong id="weeklyTicketTotal">0 tiket</strong></div>
+            </article>
+
+            <article class="panel status-panel">
+              <div class="panel-heading">
+                <div><h3>Status tiket</h3><p>Distribusi status saat ini</p></div>
+                <button class="subtle-icon" data-goto="tickets" title="Lihat tiket"><i data-lucide="arrow-up-right"></i></button>
+              </div>
+              <div class="donut-area">
+                <div class="donut-chart" id="ticketDonut"><div class="donut-center"><strong id="donutTotal">0</strong><span>Total tiket</span></div></div>
+              </div>
+              <div class="status-legend">
+                <div><span class="legend-label"><i class="legend-dot dot-open"></i> Terbuka</span><strong id="legendOpen">0</strong></div>
+                <div><span class="legend-label"><i class="legend-dot dot-progress"></i> Diproses</span><strong id="legendProgress">0</strong></div>
+                <div><span class="legend-label"><i class="legend-dot dot-resolved"></i> Selesai</span><strong id="legendResolved">0</strong></div>
+              </div>
+            </article>
+          </div>
+
+          <div class="bottom-grid">
+            <article class="panel recent-panel">
+              <div class="panel-heading">
+                <div><h3>Tiket terbaru</h3><p>Permintaan bantuan yang terakhir tercatat</p></div>
+                <button class="text-link" data-goto="tickets">Lihat semua <i data-lucide="arrow-right"></i></button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>ID Tiket</th><th>Permasalahan</th><th>Prioritas</th><th>Status</th></tr></thead>
+                  <tbody id="recentTicketsBody"></tbody>
+                </table>
+              </div>
+              <div class="empty-state hidden" id="recentTicketsEmpty"><i data-lucide="inbox"></i><strong>Belum ada tiket</strong><p>Buat tiket pertama untuk memulai.</p></div>
+            </article>
+
+            <article class="panel asset-summary-panel">
+              <div class="panel-heading">
+                <div><h3>Ringkasan aset</h3><p>Kondisi perangkat terdaftar</p></div>
+                <button class="subtle-icon" data-goto="assets" title="Lihat aset"><i data-lucide="arrow-up-right"></i></button>
+              </div>
+              <div class="asset-total"><strong id="statTotalAssets">0</strong><span>Perangkat terdaftar</span></div>
+              <div class="asset-condition-row"><span><i class="condition-dot condition-good"></i> Baik</span><strong id="assetGoodCount">0</strong></div>
+              <div class="asset-progress"><span id="assetGoodBar"></span></div>
+              <div class="asset-condition-row"><span><i class="condition-dot condition-maintenance"></i> Perlu perawatan</span><strong id="assetMaintenanceCount">0</strong></div>
+              <div class="asset-progress"><span id="assetMaintenanceBar"></span></div>
+              <div class="asset-condition-row"><span><i class="condition-dot condition-damaged"></i> Rusak</span><strong id="assetDamagedCount">0</strong></div>
+              <div class="asset-progress"><span id="assetDamagedBar"></span></div>
+              <button class="btn btn-secondary btn-full" data-goto="assets">Kelola inventaris <i data-lucide="arrow-right"></i></button>
+            </article>
+          </div>
+        </section>
+
+        <!-- TICKETS -->
+        <section class="page-section" id="page-tickets">
+          <div class="page-heading">
+            <div><div class="eyebrow">HELPDESK MANAGEMENT</div><h1>Manajemen Tiket</h1><p class="page-subtitle">Catat, cari, dan pantau penyelesaian kendala teknis.</p></div>
+            <div class="heading-actions">
+              <button class="btn btn-secondary" id="exportTickets"><i data-lucide="download"></i> Ekspor CSV</button>
+              <button class="btn btn-primary" id="addTicket"><i data-lucide="plus"></i> Buat tiket</button>
+            </div>
+          </div>
+
+          <div class="mini-stats-grid">
+            <div class="mini-stat"><span>Total tiket</span><strong id="ticketPageTotal">0</strong><i data-lucide="ticket"></i></div>
+            <div class="mini-stat"><span>Terbuka</span><strong id="ticketPageOpen">0</strong><i data-lucide="clock-3"></i></div>
+            <div class="mini-stat"><span>Diproses</span><strong id="ticketPageProgress">0</strong><i data-lucide="wrench"></i></div>
+            <div class="mini-stat"><span>Selesai</span><strong id="ticketPageResolved">0</strong><i data-lucide="check-circle-2"></i></div>
+          </div>
+
+          <article class="panel data-panel">
+            <div class="filter-toolbar">
+              <div class="search-box"><i data-lucide="search"></i><input id="ticketSearch" type="search" placeholder="Cari ID, masalah, pelapor..."></div>
+              <div class="filter-controls">
+                <select id="ticketStatusFilter" aria-label="Filter status">
+                  <option value="">Semua status</option><option value="Open">Terbuka</option><option value="In Progress">Diproses</option><option value="Resolved">Selesai</option>
+                </select>
+                <select id="ticketPriorityFilter" aria-label="Filter prioritas">
+                  <option value="">Semua prioritas</option><option value="High">Tinggi</option><option value="Medium">Sedang</option><option value="Low">Rendah</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="full-table">
+                <thead><tr><th>ID Tiket</th><th>Permasalahan</th><th>Pelapor</th><th>Prioritas</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+                <tbody id="ticketsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state hidden" id="ticketsEmpty"><i data-lucide="search-x"></i><strong>Tiket tidak ditemukan</strong><p>Coba ubah kata kunci atau filter.</p></div>
+            <div class="table-footer"><span id="ticketCountLabel">Menampilkan 0 tiket</span><span>Data demo tersimpan di browser</span></div>
+          </article>
+        </section>
+
+        <!-- ASSETS -->
+        <section class="page-section" id="page-assets">
+          <div class="page-heading">
+            <div><div class="eyebrow">IT ASSET MANAGEMENT</div><h1>Inventaris Aset</h1><p class="page-subtitle">Kelola data perangkat dan pantau kondisi aset IT.</p></div>
+            <div class="heading-actions"><button class="btn btn-primary" id="addAsset"><i data-lucide="plus"></i> Tambah aset</button></div>
+          </div>
+
+          <div class="mini-stats-grid">
+            <div class="mini-stat"><span>Total aset</span><strong id="assetPageTotal">0</strong><i data-lucide="monitor"></i></div>
+            <div class="mini-stat"><span>Kondisi baik</span><strong id="assetPageGood">0</strong><i data-lucide="check-circle-2"></i></div>
+            <div class="mini-stat"><span>Perlu perawatan</span><strong id="assetPageMaintenance">0</strong><i data-lucide="wrench"></i></div>
+            <div class="mini-stat"><span>Rusak</span><strong id="assetPageDamaged">0</strong><i data-lucide="alert-triangle"></i></div>
+          </div>
+
+          <article class="panel data-panel">
+            <div class="filter-toolbar">
+              <div class="search-box"><i data-lucide="search"></i><input id="assetSearch" type="search" placeholder="Cari kode, perangkat, lokasi..."></div>
+              <div class="filter-controls">
+                <select id="assetConditionFilter" aria-label="Filter kondisi">
+                  <option value="">Semua kondisi</option><option value="Good">Baik</option><option value="Maintenance">Perlu perawatan</option><option value="Damaged">Rusak</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="full-table">
+                <thead><tr><th>Kode aset</th><th>Perangkat</th><th>Kategori</th><th>Lokasi</th><th>Kondisi</th><th>Tanggal perawatan</th><th>Aksi</th></tr></thead>
+                <tbody id="assetsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state hidden" id="assetsEmpty"><i data-lucide="monitor-off"></i><strong>Aset tidak ditemukan</strong><p>Coba ubah kata kunci atau filter.</p></div>
+            <div class="table-footer"><span id="assetCountLabel">Menampilkan 0 aset</span><span>Inventaris perangkat IT</span></div>
+          </article>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="page-section" id="page-about">
+          <div class="page-heading"><div><div class="eyebrow">PROJECT INFORMATION</div><h1>Tentang ITCare</h1><p class="page-subtitle">Proyek portofolio untuk simulasi operasional IT Support.</p></div></div>
+          <div class="about-hero panel">
+            <div class="about-logo"><i data-lucide="monitor-cog"></i></div>
+            <div><span class="demo-pill"><span></span> PORTFOLIO PROJECT</span><h2>ITCare — IT Helpdesk & Asset Management</h2><p>Dashboard demo untuk menunjukkan alur pencatatan kendala pengguna, pemantauan status tiket, dan pengelolaan inventaris perangkat IT.</p></div>
+          </div>
+          <div class="about-grid">
+            <article class="panel about-card"><span class="about-card-icon"><i data-lucide="layers"></i></span><h3>Fitur utama</h3><ul><li>Dashboard statistik dan grafik tiket</li><li>Tambah, edit, dan hapus tiket</li><li>Pencarian serta filter status dan prioritas</li><li>Ekspor data tiket ke CSV</li><li>Manajemen inventaris aset</li><li>Penyimpanan demo dengan localStorage</li></ul></article>
+            <article class="panel about-card"><span class="about-card-icon"><i data-lucide="code-2"></i></span><h3>Teknologi</h3><div class="tech-tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>localStorage</span><span>Lucide Icons</span></div><p class="about-note">Antarmuka dibuat tanpa framework frontend. Ikon menggunakan Lucide melalui CDN.</p></article>
+            <article class="panel about-card"><span class="about-card-icon"><i data-lucide="workflow"></i></span><h3>Simulasi alur kerja</h3><ol><li>Pengguna melaporkan kendala teknis.</li><li>Tim IT mencatat dan menetapkan prioritas tiket.</li><li>Status diperbarui saat penanganan berlangsung.</li><li>Tiket ditandai selesai setelah kendala teratasi.</li></ol></article>
+            <article class="panel about-card"><span class="about-card-icon"><i data-lucide="shield-check"></i></span><h3>Batasan demo</h3><p>Aplikasi ini merupakan simulasi frontend. Data tersimpan di browser yang digunakan, bukan server terpusat. Login, sinkronisasi antarperangkat, dan kontrol akses belum diimplementasikan.</p><div class="notice"><i data-lucide="info"></i><span>Gunakan data fiktif saat demonstrasi portofolio.</span></div></article>
+          </div>
+        </section>
+
+        <footer class="app-footer"><span>© 2026 ITCare · Portfolio Project</span><span><span class="footer-dot"></span> Berjalan dalam mode demo</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- TICKET MODAL -->
+  <div class="modal-backdrop hidden" id="ticketModal" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="ticketModalTitle">Buat tiket baru</h2><p>Isi informasi kendala teknis di bawah ini.</p></div><button class="icon-button modal-close" data-close="ticketModal" aria-label="Tutup"><i data-lucide="x"></i></button></div>
+      <form id="ticketForm">
+        <input type="hidden" id="ticketId">
+        <div class="form-grid">
+          <label class="form-field full-field">Judul permasalahan <span>*</span><input id="ticketTitle" required maxlength="100" placeholder="Contoh: Komputer tidak dapat menyala"></label>
+          <label class="form-field">Nama pelapor <span>*</span><input id="ticketReporter" required maxlength="80" placeholder="Nama pengguna"></label>
+          <label class="form-field">Kategori <span>*</span><select id="ticketCategory" required><option value="Hardware">Hardware</option><option value="Software">Software</option><option value="Network">Jaringan</option><option value="Account">Akun & akses</option><option value="Other">Lainnya</option></select></label>
+          <label class="form-field">Prioritas <span>*</span><select id="ticketPriority" required><option value="Low">Rendah</option><option value="Medium" selected>Sedang</option><option value="High">Tinggi</option></select></label>
+          <label class="form-field">Status <span>*</span><select id="ticketStatus" required><option value="Open">Terbuka</option><option value="In Progress">Diproses</option><option value="Resolved">Selesai</option></select></label>
+          <label class="form-field full-field">Deskripsi kendala<textarea id="ticketDescription" rows="3" maxlength="600" placeholder="Jelaskan kendala yang dialami..."></textarea></label>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary" data-close="ticketModal">Batal</button><button type="submit" class="btn btn-primary"><i data-lucide="save"></i> Simpan tiket</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ASSET MODAL -->
+  <div class="modal-backdrop hidden" id="assetModal" role="dialog" aria-modal="true" aria-labelledby="assetModalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="assetModalTitle">Tambah aset baru</h2><p>Catat perangkat dalam inventaris IT.</p></div><button class="icon-button modal-close" data-close="assetModal" aria-label="Tutup"><i data-lucide="x"></i></button></div>
+      <form id="assetForm">
+        <input type="hidden" id="assetId">
+        <div class="form-grid">
+          <label class="form-field">Nama perangkat <span>*</span><input id="assetName" required maxlength="100" placeholder="Contoh: Laptop Lenovo ThinkPad"></label>
+          <label class="form-field">Kategori <span>*</span><select id="assetCategory" required><option value="Laptop">Laptop</option><option value="Desktop PC">Desktop PC</option><option value="Printer">Printer</option><option value="Network">Perangkat jaringan</option><option value="Peripheral">Peripheral</option><option value="Other">Lainnya</option></select></label>
+          <label class="form-field">Lokasi <span>*</span><input id="assetLocation" required maxlength="100" placeholder="Contoh: Ruang IT"></label>
+          <label class="form-field">Kondisi <span>*</span><select id="assetCondition" required><option value="Good">Baik</option><option value="Maintenance">Perlu perawatan</option><option value="Damaged">Rusak</option></select></label>
+          <label class="form-field full-field">Tanggal perawatan berikutnya <input id="assetMaintenanceDate" type="date"></label>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary" data-close="assetModal">Batal</button><button type="submit" class="btn btn-primary"><i data-lucide="save"></i> Simpan aset</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
